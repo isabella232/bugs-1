@@ -1,6 +1,7 @@
 package de.mosmann.vaadinbugs.spring;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,8 +14,16 @@ import com.vaadin.flow.server.PWA;
 public class MainView extends VerticalLayout {
 
     public MainView(@Autowired MessageBean bean) {
+        ComboBox<String> stringComboBox = new ComboBox<>();
+        stringComboBox.setInvalid(true);
+        stringComboBox.setErrorMessage("show this error message");
+        add(stringComboBox);
+
         Button button = new Button("Click me",
-                e -> Notification.show(bean.getMessage()));
+                e -> {
+                    stringComboBox.setInvalid(!stringComboBox.isInvalid());
+                    Notification.show(bean.getMessage());
+                });
         add(button);
     }
 
